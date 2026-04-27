@@ -137,7 +137,13 @@ class App(tk.Tk):
             conn_frame, text="⚙", bg=ACCENT, fg=FG,
             relief="flat", font=FONT_MD, width=2,
             command=self._show_config, cursor="hand2",
-        ).grid(row=0, column=4, padx=(2, 6), pady=4)
+        ).grid(row=0, column=4, padx=(2, 2), pady=4)
+
+        tk.Button(
+            conn_frame, text="✕", bg=BTN_CANCEL, fg=FG,
+            relief="flat", font=FONT_MD, width=2,
+            command=self._on_close, cursor="hand2",
+        ).grid(row=0, column=5, padx=(2, 6), pady=4)
 
         # ── Model selector ────────────────────────────────────────────────────
         model_frame = tk.Frame(p, bg=PANEL_BG)
