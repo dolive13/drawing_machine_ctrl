@@ -106,10 +106,11 @@ class App(tk.Tk):
     def _build_main_page(self):
         p = self._main_page
 
-        # ── Connection bar ────────────────────────────────────────────────────
+        # ── Connection bar + Model selector (combined grid) ───────────────────
         conn_frame = tk.Frame(p, bg=PANEL_BG)
         conn_frame.pack(fill="x", padx=4, pady=(4, 2))
 
+        # Row 0: Port label | port combobox | ↺ | Connect | ✕
         tk.Label(conn_frame, text="Port", bg=PANEL_BG, fg=FG_DIM,
                  font=FONT_SM).grid(row=0, column=0, padx=(6, 2), pady=4)
 
@@ -134,40 +135,37 @@ class App(tk.Tk):
         self._conn_btn.grid(row=0, column=3, padx=(2, 2), pady=4)
 
         tk.Button(
-            conn_frame, text="⚙", bg=ACCENT, fg=FG,
-            relief="flat", font=FONT_MD, width=2,
-            command=self._show_config, cursor="hand2",
-        ).grid(row=0, column=4, padx=(2, 2), pady=4)
-
-        tk.Button(
             conn_frame, text="✕", bg=BTN_CANCEL, fg=FG,
             relief="flat", font=FONT_MD, width=2,
             command=self._on_close, cursor="hand2",
-        ).grid(row=0, column=5, padx=(2, 6), pady=4)
+        ).grid(row=0, column=4, padx=(2, 6), pady=4)
 
-        # ── Model selector ────────────────────────────────────────────────────
-        model_frame = tk.Frame(p, bg=PANEL_BG)
-        model_frame.pack(fill="x", padx=4, pady=2)
-
-        tk.Label(model_frame, text="Model", bg=PANEL_BG, fg=FG_DIM,
-                 font=FONT_SM).pack(side="left", padx=(6, 4))
+        # Row 1: Model label | model combobox | ↺ | ⚙
+        tk.Label(conn_frame, text="Model", bg=PANEL_BG, fg=FG_DIM,
+                 font=FONT_SM).grid(row=1, column=0, padx=(6, 2), pady=4)
 
         self._model_var = tk.StringVar()
         self._model_cb = ttk.Combobox(
-            model_frame, textvariable=self._model_var,
-            state="readonly", font=FONT_SM, width=18,
+            conn_frame, textvariable=self._model_var,
+            state="readonly", font=FONT_SM, width=10,
         )
         models = scan_models()
         self._model_cb["values"] = models
         if models:
             self._model_cb.current(0)
-        self._model_cb.pack(side="left", padx=4, pady=4)
+        self._model_cb.grid(row=1, column=1, padx=2, pady=4)
 
         tk.Button(
-            model_frame, text="↺", bg=ACCENT, fg=FG,
+            conn_frame, text="↺", bg=ACCENT, fg=FG,
             relief="flat", font=FONT_MD, width=2,
             command=self._refresh_models, cursor="hand2",
-        ).pack(side="left", padx=2)
+        ).grid(row=1, column=2, padx=2)
+
+        tk.Button(
+            conn_frame, text="⚙", bg=ACCENT, fg=FG,
+            relief="flat", font=FONT_MD, width=2,
+            command=self._show_config, cursor="hand2",
+        ).grid(row=1, column=3, padx=(2, 2), pady=4)
 
         # ── START/CANCEL + PAUSE/RESUME ───────────────────────────────────────
         ctrl_frame = tk.Frame(p, bg=BG)
