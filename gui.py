@@ -62,7 +62,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("Drawing Machine")
-        self.geometry("320x480")
+        self.attributes("-fullscreen", True)
         self.resizable(False, False)
         self.configure(bg=BG)
 
